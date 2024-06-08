@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "tsc-watch --onSuccess 'npm run start'",
         "build": "rm -rf build && tsc",
-        "start": "node build/index.js",
+        "start": "dotenvx run -- node build/index.js",
         "lint": "eslint --fix .",
         "prettier": "prettier --write .",
         "test": "echo \"Error: no test specified\" && exit 1",
@@ -34,5 +34,8 @@
         "tsc-watch": "^6.2.0",
         "typescript": "^5.4.5",
         "typescript-eslint": "^7.12.0"
+    },
+    "dependencies": {
+        "@dotenvx/dotenvx": "^0.44.1"
     }
 }
