@@ -5,7 +5,10 @@ import { connectToDatabase } from './utilities/database.js'
 import { logger } from './utilities/logger.js'
 
 const prod = env['NODE_ENV'] === 'production'
-logger.info(`program start (${process.pid}) - ${prod ? 'prod' : 'dev'}`)
+const version = env['VERSION'] ?? '?'
+logger.info(
+    `program start - pid ${process.pid}, env ${prod ? 'prod' : 'dev'}, version ${version}`
+)
 
 const bot = createBot()
 await configureCleanup(bot)

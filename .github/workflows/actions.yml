@@ -1,0 +1,59 @@
+name: Deploy
+on:
+    push:
+        branches: main
+
+env:
+    VERSION: ${{ github.run_number }}-${{ github.run_attempt }}-${{ github.run_id }}
+    REPO_NAME: ${{ github.event.repository.name }}
+
+jobs:
+    main:
+        runs-on: Linux
+        environment: prod
+        steps:
+            - name: checkout code
+              uses: actions/checkout@v4
+
+            - name: install nvm
+              run: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
+            - name: install node, update npm
+              run: |
+                  \. "$HOME/.nvm/nvm.sh"
+                  nvm install --lts
+                  npm i -g npm
+
+            - name: install packages, build
+              run: |
+                  \. "$HOME/.nvm/nvm.sh"
+                  npm ci
+                  npm run build
+
+            - name: create .env
+              run: |
+                  echo "BOT_TOKEN=${{ vars.BOT_TOKEN }}" >> .env
+                  echo "LOGTAIL_TOKEN=${{ vars.LOGTAIL_TOKEN }}" >> .env
+                  echo "LOG_LEVEL=${{ vars.LOG_LEVEL }}" >> .env
+                  echo "MONGO_DB_URL=${{ vars.MONGO_DB_URL }}" >> .env
+                  echo "NODE_ENV=${{ vars.NODE_ENV }}" >> .env
+                  echo "ROOT_USER=${{ vars.ROOT_USER }}" >> .env
+                  echo "VERSION=${{ env.VERSION }}" >> .env
+
+            - name: copy files
+              run: |
+                  mkdir -p ~/Deployments/${{ env.REPO_NAME }} && cd "$_"
+                  echo ${{ env.VERSION }} > latest
+                  mkdir -p ${{ env.VERSION }} && cd "$_"
+                  cp -a ~/Programs/GitHub-Actions-Runner/_work/${{ env.REPO_NAME }}/${{ env.REPO_NAME }}/. .
+
+            - name: install, configure pm2
+              run: |
+                  \. "$HOME/.nvm/nvm.sh"
+                  npm i -g pm2
+                  pm2 install pm2-logrotate
+                  pm2 stop ${{ env.REPO_NAME }} || true
+                  pm2 delete ${{ env.REPO_NAME }} || true
+                  pm2 save --force
+                  pm2 start npm --name ${{ env.REPO_NAME }} --exp-backoff-restart-delay=${{ vars.RESTART_DELAY }} -- run start
+                  pm2 save

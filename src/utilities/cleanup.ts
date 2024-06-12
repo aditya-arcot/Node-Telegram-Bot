@@ -28,7 +28,7 @@ const runCleanupAndExit = async (bot: Telegraf, event: string, err?: Error) => {
     } catch (e) {
         logger.fatal(e, 'error during cleanup')
     } finally {
-        logger.info(`program exit (${process.pid})`)
+        logger.info(`program exit - pid ${process.pid}`)
         process.exit(1)
     }
 }
