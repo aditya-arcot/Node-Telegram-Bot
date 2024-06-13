@@ -27,7 +27,8 @@ jobs:
             - name: install packages, build
               run: |
                   \. "$HOME/.nvm/nvm.sh"
-                  npm ci
+                  npm pkg delete scripts.prepare
+                  NODE_ENV=${{ vars.NODE_ENV }} npm ci
                   npm run build
 
             - name: create .env
