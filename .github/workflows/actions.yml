@@ -38,7 +38,7 @@ jobs:
                   echo "LOG_LEVEL=${{ vars.LOG_LEVEL }}" >> .env
                   echo "MONGO_DB_URL=${{ vars.MONGO_DB_URL }}" >> .env
                   echo "NODE_ENV=${{ vars.NODE_ENV }}" >> .env
-                  echo "ROOT_USER=${{ vars.ROOT_USER }}" >> .env
+                  echo "ADMIN=${{ vars.ADMIN }}" >> .env
                   echo "VERSION=${{ env.VERSION }}" >> .env
 
             - name: copy files

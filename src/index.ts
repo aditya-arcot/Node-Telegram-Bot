@@ -13,5 +13,5 @@ logger.info(
 const bot = createBot()
 await configureCleanup(bot)
 await connectToDatabase()
-configureBot(bot)
+await configureBot(bot)
 await startBot(bot)
