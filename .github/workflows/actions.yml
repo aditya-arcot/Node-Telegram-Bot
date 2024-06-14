@@ -48,6 +48,12 @@ jobs:
                   mkdir -p ${{ env.VERSION }} && cd "$_"
                   cp -a ~/Projects/actions-runner/_work/${{ env.REPO_NAME }}/${{ env.REPO_NAME }}/. .
 
+            - name: delete old deployments
+              run: |
+                  cd ~/Deployments/${{ env.REPO_NAME }}
+                  MAX_DEPLOYMENTS=3
+                  ls -td */ | tail -n +$((MAX_DEPLOYMENTS+1)) | xargs rm -rf
+
             # set up pm2 startup, log rotate manually
             - name: install, configure pm2
               run: |
