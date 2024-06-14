@@ -52,6 +52,7 @@ jobs:
             - name: install, configure pm2
               run: |
                   \. "$HOME/.nvm/nvm.sh"
+                  cd ~/Deployments/${{ env.REPO_NAME }}/${{ env.VERSION }}
                   npm i -g pm2
                   pm2 stop ${{ env.REPO_NAME }} || true
                   pm2 delete ${{ env.REPO_NAME }} || true
