@@ -20,21 +20,18 @@ export const connectToDatabase = async (): Promise<void> => {
 }
 
 export const getUsers = async () => {
-    return await User.find().lean()
+    return User.find().lean()
 }
 
-export const getUserById = async (id: number | string) => {
-    return await User.findOne({ _id: id }).lean()
+export const getUserById = async (id: number) => {
+    return User.findOne({ _id: id }).lean()
 }
 
-export const getUserByUsername = async (username: string) => {
-    return await User.findOne({ username }).lean()
+export const getUserByUsername = (username: string) => {
+    return User.findOne({ username }).lean()
 }
 
-export const updateUserActive = async (
-    id: number | string | null,
-    isActive: boolean
-) => {
+export const updateUserActive = (id: number | null, isActive: boolean) => {
     if (!id) throw Error('id cannot be null')
-    return await User.updateOne({ _id: id }, { isActive }).lean()
+    return User.updateOne({ _id: id }, { isActive })
 }

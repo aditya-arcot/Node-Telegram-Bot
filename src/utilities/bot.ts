@@ -91,7 +91,7 @@ const addCommands = async (bot: Telegraf) => {
 }
 
 const addStartHandler = (bot: Telegraf) => {
-    bot.command('start', async (ctx) => {
+    bot.start(async (ctx) => {
         const user = getUserStringFromContext(ctx)
         const existingUser = await getUserById(ctx.from.id)
         if (existingUser) {
@@ -141,7 +141,7 @@ const addUsersHandler = (bot: Telegraf) => {
             userStr += user.isActive ? 'active' : 'inactive'
             await sendMessage(ctx, userStr)
         })
-        return Promise<void>
+        return
     })
 }
 
@@ -184,7 +184,9 @@ const getUserWithIdentifier = async (id: string) => {
         const username = id.slice(1)
         return await getUserByUsername(username)
     }
-    return await getUserById(id)
+    const parsed = parseInt(id)
+    if (isNaN(parsed)) return
+    return await getUserById(parsed)
 }
 
 const addTextHandler = (bot: Telegraf): void => {
