@@ -174,7 +174,7 @@ const addActivateHandler = (
             )
         }
 
-        await updateUserActive(user._id, !active)
+        await updateUserActive(user._id, active)
         return await sendMessage(ctx, 'Updated user status')
     })
 }
