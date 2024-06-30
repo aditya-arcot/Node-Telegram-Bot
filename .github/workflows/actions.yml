@@ -28,17 +28,17 @@ jobs:
               run: |
                   \. "$HOME/.nvm/nvm.sh"
                   npm pkg delete scripts.prepare
-                  NODE_ENV=${{ vars.NODE_ENV }} npm ci
+                  NODE_ENV=${{ secrets.NODE_ENV }} npm ci
                   npm run build
 
             - name: create .env
               run: |
-                  echo "BOT_TOKEN=${{ vars.BOT_TOKEN }}" >> .env
-                  echo "LOGTAIL_TOKEN=${{ vars.LOGTAIL_TOKEN }}" >> .env
-                  echo "LOG_LEVEL=${{ vars.LOG_LEVEL }}" >> .env
-                  echo "MONGO_DB_URL=${{ vars.MONGO_DB_URL }}" >> .env
-                  echo "NODE_ENV=${{ vars.NODE_ENV }}" >> .env
-                  echo "ADMIN=${{ vars.ADMIN }}" >> .env
+                  echo "ADMIN_ID=${{ secrets.ADMIN_ID }}" >> .env
+                  echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }}" >> .env
+                  echo "LOGTAIL_TOKEN=${{ secrets.LOGTAIL_TOKEN }}" >> .env
+                  echo "LOG_LEVEL=${{ secrets.LOG_LEVEL }}" >> .env
+                  echo "MONGO_DB_URL=${{ secrets.MONGO_DB_URL }}" >> .env
+                  echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
                   echo "VERSION=${{ env.VERSION }}" >> .env
 
             - name: copy files
@@ -63,5 +63,5 @@ jobs:
                   pm2 update
                   pm2 stop ${{ env.REPO_NAME }} || true
                   pm2 delete ${{ env.REPO_NAME }} || true
-                  pm2 start npm --name ${{ env.REPO_NAME }} --exp-backoff-restart-delay=${{ vars.RESTART_DELAY }} -- run start
+                  pm2 start npm --name ${{ env.REPO_NAME }} --exp-backoff-restart-delay=${{ secrets.RESTART_DELAY }} -- run start
                   pm2 save
