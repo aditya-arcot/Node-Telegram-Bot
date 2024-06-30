@@ -12,7 +12,7 @@ import {
 import { logger } from './logger.js'
 
 const token = env['BOT_TOKEN']
-const admin = env['ADMIN']
+const admin = env['ADMIN_ID'] ? parseInt(env['ADMIN_ID']) : undefined
 
 export const createBot = (): Telegraf => {
     if (!token) {
@@ -104,7 +104,7 @@ const addStartHandler = (bot: Telegraf) => {
             }
         }
 
-        if (!checkAdmin(ctx.from.username)) {
+        if (!checkAdmin(ctx.from.id)) {
             logUserInfo(user, 'new user')
             await createUser(ctx, false)
             logUserInfo(user, 'created new inactive user')
@@ -126,7 +126,7 @@ const addStatusHandler = (bot: Telegraf) => {
 
 const addUsersHandler = (bot: Telegraf) => {
     bot.command('users', async (ctx) => {
-        if (!checkAdmin(ctx.from.username)) {
+        if (!checkAdmin(ctx.from.id)) {
             return await sendMessage(ctx, 'Admin-only command')
         }
 
@@ -137,7 +137,7 @@ const addUsersHandler = (bot: Telegraf) => {
         await sendMessage(ctx, '<u>Users</u>', true)
         users.forEach(async (user) => {
             let userStr = `${user.username} - `
-            userStr += checkAdmin(user.username) ? 'admin, ' : ''
+            userStr += checkAdmin(user._id) ? 'admin, ' : ''
             userStr += user.isActive ? 'active' : 'inactive'
             await sendMessage(ctx, userStr)
         })
@@ -220,8 +220,8 @@ const sendMessage = async (
     return await ctx.replyWithHTML(text)
 }
 
-const checkAdmin = (username: string | undefined): boolean => {
-    return !!(admin && username === admin)
+const checkAdmin = (id: number | null): boolean => {
+    return !!(id && id === admin)
 }
 
 const logUserInfo = (user: string, text: string): void => {
