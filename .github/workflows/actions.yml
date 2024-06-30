@@ -9,7 +9,7 @@ env:
 
 jobs:
     main:
-        runs-on: X64
+        runs-on: mbp-13
         environment: prod
         steps:
             - name: context
@@ -43,10 +43,9 @@ jobs:
 
             - name: copy files
               run: |
-                  mkdir -p ~/Deployments/${{ env.REPO_NAME }} && cd "$_"
-                  echo ${{ env.VERSION }} > latest
-                  mkdir -p ${{ env.VERSION }} && cd "$_"
-                  cp -a ~/Projects/actions-runner/_work/${{ env.REPO_NAME }}/${{ env.REPO_NAME }}/. .
+                  mkdir -p ~/Deployments/${{ env.REPO_NAME }}/${{ env.VERSION }}
+                  cp -a . "$_" && cd "$_"
+                  cd .. && echo ${{ env.VERSION }} > latest
 
             - name: delete old deployments
               run: |
