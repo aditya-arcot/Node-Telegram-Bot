@@ -12,9 +12,6 @@ jobs:
         runs-on: mbp-13
         environment: prod
         steps:
-            - name: context
-              run: echo "${{ toJSON(github) }}"
-
             - name: checkout code
               uses: actions/checkout@v4
 
