@@ -25,7 +25,7 @@ jobs:
               run: |
                   \. "$HOME/.nvm/nvm.sh"
                   npm pkg delete scripts.prepare
-                  NODE_ENV=${{ secrets.NODE_ENV }} npm ci
+                  npm ci
                   npm run build
 
             - name: create .env
