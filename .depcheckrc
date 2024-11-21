@@ -1,0 +1,6 @@
+ignores: [
+    "@logtail/pino",
+    "@tsconfig/strictest",
+    "pino-pretty",
+    "prettier-plugin-organize-imports"
+]
