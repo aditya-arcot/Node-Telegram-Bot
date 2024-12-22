@@ -21,7 +21,7 @@
     "dependencies": {
         "@dotenvx/dotenvx": "^1.24.4",
         "@logtail/pino": "^0.5.2",
-        "@tsconfig/node-lts": "^22.0.0",
+        "@tsconfig/node-lts": "^22.0.1",
         "@tsconfig/strictest": "^2.0.5",
         "mongoose": "^8.8.3",
         "pino": "^9.5.0",
