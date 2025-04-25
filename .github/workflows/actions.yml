@@ -1,7 +1,11 @@
-name: Deploy
+name: Deploy Application
 on:
     push:
         branches: main
+
+concurrency:
+    group: deploy-${{ github.ref_name }}
+    cancel-in-progress: true
 
 env:
     VERSION: ${{ github.run_number }}-${{ github.run_attempt }}-${{ github.run_id }}
