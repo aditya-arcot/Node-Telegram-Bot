@@ -47,13 +47,13 @@ jobs:
 
             - name: copy files
               run: |
-                  mkdir -p ~/Deployments/${{ env.REPO_NAME }}/${{ env.VERSION }}
+                  mkdir -p ~/Projects/Deployments/${{ env.REPO_NAME }}/${{ env.VERSION }}
                   cp -a . "$_" && cd "$_"
                   cd .. && echo ${{ env.VERSION }} > latest
 
             - name: delete old deployments
               run: |
-                  cd ~/Deployments/${{ env.REPO_NAME }}
+                  cd ~/Projects/Deployments/${{ env.REPO_NAME }}
                   MAX_DEPLOYMENTS=3
                   ls -td */ | tail -n +$((MAX_DEPLOYMENTS+1)) | xargs rm -rf
 
@@ -61,7 +61,7 @@ jobs:
             - name: install, configure pm2
               run: |
                   \. "$HOME/.nvm/nvm.sh"
-                  cd ~/Deployments/${{ env.REPO_NAME }}/${{ env.VERSION }}
+                  cd ~/Projects/Deployments/${{ env.REPO_NAME }}/${{ env.VERSION }}
                   npm i -g pm2@latest
                   pm2 update
                   pm2 stop ${{ env.REPO_NAME }} || true
